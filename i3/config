@@ -1,0 +1,340 @@
+
+#------------------------SET VARIABLES---------------------------#
+# Mod1=Alt Mod4=Super_key(Windows key)
+set $laptop eDP1 
+set $monitor HDMI1 
+
+set $inner_gaps 12
+set $outer_gaps -12
+
+#nm-applet
+exec --no-startup-id nm-applet 
+set $mod		Mod1
+set $mod2		Return
+set $mod3		Shift
+set $mod4		Mod4
+set $mod5		control
+set $term		alacritty
+set $shutdown		poweroff
+
+#define KEY_R			19
+
+# Set workspaces with icons
+#set $ws1	""
+#set $ws2	""
+#set $ws3	""
+#set $ws4	""
+#set $ws5	""
+#set $ws6	""
+#set $ws7	""
+#set $ws8	""
+#set $ws9	"".
+#set $ws10	""
+
+# Set workspaces without icons
+set $ws1	"1"
+set $ws2	"2"
+set $ws3	"3"
+set $ws4	"4"
+set $ws5	"5"
+set $ws6	"6"
+set $ws7	"7"
+set $ws8	"8"
+set $ws9	"9"
+set $ws10	"10"
+
+
+
+
+gaps inner $inner_gaps
+gaps outer $outer_gaps
+
+
+
+
+
+#----------------------------STARTUP-----------------------------#
+# Window title font. Will be used in bar {} block if not specified in it.
+font pango:Source Code Pro 10
+
+# Run compositor
+#exec --no-startup-id picom --config /home/davit/.config/picom.conf -b
+
+# Multitouch gestures
+#exec --no-startup-id libinput-gestures-setup autostart
+#exec --no-startup-id libinput-gestures-setup start
+
+# Set wallpaper
+exec_always --no-startup-id feh --no-fehbg --bg-fill ~/.config/wall.png
+
+# Set display backlight
+exec --no-startup-id xbacklight -set 50
+
+# Shutdown functionality
+bindsym $mod+x exec --no-startup-id "i3-nagbar -t warning -m 'Do you really want to shutdown? This will shutdown your computer.' -b 'Yes' '$shutdown'"
+
+# Programs to start at startup 
+exec --no-startup-id nm-applet
+
+# Enable dolby sound boost
+#exec --no-startup-id pulseeffects --gapplication-service
+
+# Disable Caps_Lock on startup 
+#exec --no-startup-id setxkbmap -option caps:none
+
+# Keyboard shortcuts
+bindcode $mod4+65  exec --no-startup-id "if setxkbmap -query | grep -q 'us'; then setxkbmap -layout ge; else setxkbmap -layout us; fi && pkill -RTMIN+1 i3blocks"
+
+#------------------------SETUP ENVIRONMENT-----------------------#
+#hide_edge_borders both
+#new_window none
+for_window [class="^.*"] border pixel 0
+for_window [title="st_floating"] floating enable
+for_window [title="st_floating"] resize set 1000 500
+for_window [title="st_floating"] move position center
+for_window [title="st_floating"] border pixel 2
+for_window [instance="st_floating"] move scratchpad
+for_window [instance="st_floating"] scratchpad show;
+#exec --no-startup-id i3-sensible-terminal -name st_floating
+for_window [title="border_d"] border pixel 2
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+#for_window [class="(?!)st"] floating enable, move scratchpad #, move container to ws4
+
+#for_window [instance="dropdown"] floating enable
+#for_window [instance="dropdown"] resize set 960 540
+#for_window [instance="dropdown"] move position center
+#for_window [instance="dropdown"] move scratchpad
+#for_window [instance="dropdown"] scratchpad show;
+
+
+#exec --no-startup-id $term -name dropdown -e tmux
+
+#------------------------ASSIGN WORKSPACE------------------------#
+assign [class="(?i)firefox"] $ws1
+assign [class="(?i)jetbrains-pycharm"] $ws3
+assign [class="(?i)rider"] $ws3
+assign [class="(?i)datagrip"] $ws3
+assign [class="(?i)mailspring"] $ws8 
+assign [class="(?i)jetbrains-idea"] $ws3
+assign [class="(?i)postbird"] $ws7
+assign [class="(?i)jetbrains-studio"] $ws3
+assign [class="(?i)subl"] $ws4
+assign [class="(?i)alacritty"] $ws5
+#assign [class="^Qemu-system-x86_64$"] $ws6
+
+
+
+#--------------------------RUN PROGRAMS--------------------------#
+bindsym --release $mod+$mod2		exec --no-startup-id  "pgrep -c alacritty|| $term -t border_d";workspace $ws5;
+bindsym --release $mod+$mod3+$mod2		exec --no-startup-id  "$term -t border_d";workspace $ws5;
+#bindsym --release $mod+r                exec --no-startup-id st -t dropdown
+#bindsym --release $mod+n		exec --no-startup-id $term -T st_floating -e watch -n 1 sensors
+#bindsym --release $mod+e		workspace $ws2; exec --no-startup-id "pgrep -fc firefox  && notify-send ddd"
+#bindsym --release $mod+p	exec --no-startup-id "pgrep -c pycharm||pycharm"
+#bindsym --release $mod+g		exec --no-startup-id "$term"
+#bindsym --release $mod+t		exec --no-startup-id "thunar"
+#bindsym --release $mod+b	        exec --no-startup-id "postbird"
+#bindsym --release $mod+c		exec --no-startup-id "pgrep -c subl|| subl"
+#bindsym --release Print exec --no-startup-id "gnome-screenshot -i" 
+#bindsym --release $mod+m		exec --no-startup-id "pgrep -c mailspring || mailspring"
+
+
+
+client.focused #555555 #555555 #64918f #2e9ef4     #64918f
+
+bindcode --release $mod+27                exec --no-startup-id st -t st_floating 
+bindcode --release $mod+28		exec --no-startup-id $term -T  -e ranger
+bindcode --release $mod+26		workspace $ws1; exec --no-startup-id "firefox"
+bindcode --release mod4+26	exec --no-startup-id firefox
+bindcode --release $mod+33	   	exec --no-startup-id "pgrep -c pycharm && i3-msg workspace 3 ||~/.launcher/pycharm" 
+bindcode --release $mod+39		exec --no-startup-id "pgrep -c subl && i3-msg workspace 5  || subl" 
+bindcode --release 107			exec --no-startup-id "scrot -u ~/Pictures/%b%d_%H-%M.png"
+bindcode --release $mod+58		exec --no-startup-id "pgrep -c mailspring && i3-msg workspace 8 || mailspring " 
+bindcode --release $mod+31		exec --no-startup-id  "pgrep -c intellij && i3-msg workspace 3 || ~/.launcher/idea"
+bindcode --release $mod+45 	 exec --no-startup-id  "pgrep -c android && i3-msg workspace 3 || ~/.launcher/studio"
+bindcode --release $mod+46 	 exec --no-startup-id  "pgrep -c skypeforlinux  || skypeforlinux"
+#bindcode $mod5+$mod3+54 exec --no-startup-id "xclip -out -selection primary | xclip -in -selection clipboard"
+bindcode --release $mod+56		exec --no-startup-id  "pgrep -c datagrip && i3-msg workspace 3 || ~/.launcher/datagrip"
+bindcode --release $mod+57		exec --no-startup-id  "~/tools/dmenu_launcher/jetbrains-launcher.sh"
+bindcode --release $mod+44		exec --no-startup-id  "pgrep -fEc webstorm && i3-msg workspace 3 || ~/.launcher/webstorm"
+bindcode --release $mod+38		workspace $ws3;exec --no-startup-id  "pgrep -c postman ||postman"
+
+#bindcode $mod5+$mod3+55 exec --no-startup-id "xclip -selection clipboard -o"
+
+
+
+
+# Kill focused window
+#bindsym $mod+q			kill
+bindcode $mod+24			kill
+
+#-------------------------FUNCTIONALITY--------------------------#
+bindsym XF86AudioMute			exec --no-startup-id pactl set-sink-mute 0 toggle && pkill -RTMIN+2 i3blocks
+bindsym XF86AudioLowerVolume		exec --no-startup-id amixer -q sset Master 10%- && pkill -RTMIN+2 i3blocks
+bindsym XF86AudioRaiseVolume		exec --no-startup-id amixer -q sset Master 10%+ && pkill -RTMIN+2 i3blocks
+bindsym XF86AudioMicMute		exec --no-startup-id amixer set Capture toggle && pkill -RTMIN+2 i3blocks
+bindsym XF86MonBrightnessDown		exec --no-startup-id xbacklight -dec 10 && pkill -RTMIN+3 i3blocks
+bindsym XF86MonBrightnessUp		exec --no-startup-id xbacklight -inc 10 && pkill -RTMIN+3 i3blocks
+bindsym XF86Tools			exec --no-startup-id arandr
+bindsym XF86Search			exec "echo 'playlist-next' | socat - /tmp/mpvsocket"
+bindsym XF86Calculator			exec --no-startup-id $term -T st_floating -e calc
+bindsym XF86Explorer			exec --no-startup-id $term -T st_floating -e ranger
+
+
+
+#audio
+
+bindcode $mod4+43 exec --no-startup-id  "echo 'playlist-prev' | socat - /tmp/mpvsocket"
+
+bindcode $mod4+45 exec --no-startup-id  ~/Documents/scripts/musicd
+bindcode $mod4+46 exec --no-startup-id  "echo 'playlist-next' | socat - /tmp/mpvsocket"
+
+bindsym XF86AudioPrev exec --no-startup-id  "echo 'playlist-prev' | socat - /tmp/mpvsocket"
+
+bindsym XF86AudioPlay exec --no-startup-id  ~/Documents/scripts/musicd
+bindsym XF86AudioNext exec --no-startup-id  "echo 'playlist-next' | socat - /tmp/mpvsocket"
+
+#-------------------WINDOW FOCUS, MOVE, RESIZE-------------------#
+# change focus
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+#bindsym $mod+Shift+j move left
+#bindsym $mod+Shift+k move down
+#bindsym $mod+Shift+l move up
+#bindsym $mod+Shift+semicolon move right
+  
+
+
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+#bindsym $mod+n layout stacking
+#bindsym $mod+w layout 
+
+# toggle tiling / floating
+bindsym $mod5+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+s focus child
+workspace 1 output $monitor
+workspace 2 output $monitor
+workspace 3 output $monitor
+workspace 4 output $monitor
+workspace 5 output $monitor
+workspace 6 output $laptop
+workspace 7 output $laptop
+workspace 8 output $laptop
+workspace 9 output $laptop
+
+
+# resize current window
+bindsym $mod+control+Up		resize grow height 10px or 10ppt
+bindsym $mod+control+Down	resize shrink height 10px or 10ppt
+bindsym $mod+control+Right	resize grow width 10px or 10ppt
+bindsym $mod+control+Left	resize shrink width 10px or 10ppt
+
+#--------------------------WORKSPACE MANAGEMENT------------------------#
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move backwords and forwards on workspaces:
+#workspace_auto_back_and_forth yes
+bindsym $mod+Tab workspace back_and_forth
+
+
+#bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+bindsym $mod4+1 move container to workspace $ws1
+bindsym $mod4+2 move container to workspace $ws2
+bindsym $mod4+3 move container to workspace $ws3
+bindsym $mod4+4 move container to workspace $ws4
+bindsym $mod4+5 move container to workspace $ws5
+bindsym $mod4+6 move container to workspace $ws6
+bindsym $mod4+7 move container to workspace $ws7
+bindsym $mod4+8 move container to workspace $ws8
+bindsym $mod4+9 move container to workspace $ws9
+bindsym $mod4+0 move container to workspace $ws10
+
+bindsym $mod+d move workspace to output left
+
+#--------------------RELOAD, RESTART i3WM CONFIG--------------------#
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+bindsym XF86LaunchA restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+bindcode $mod+Shift+46 exec --no-startup-id "i3lock -u -t -i /home/davit/.config/i3lock.png;/home/davit/Documents/env/bin/python /home/davit/tools/auth_capture/simple_listener.py"
+
+#--------------------i3BAR--------------------#
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
+
+font pango:Source Code Pro Medium 10
+set $transparent #00000000
+#bar {
+#	position top
+#	status_command i3status
+#	status_command i3blocks -c ~/.config/i3/i3blocks.conf
+#	colors {
+#		background $transparent
+#		separator #f7f7f7
+#		background  #141313  
+#		statusline #DDDDDD
+#		focused_workspace #FFFFFF  #f67917   #000000
+#		active_workspace #524e4e #A4A28D #FFFFFF
+#		inactive_workspace #A4A28D #000000 #DDDDDD
+#		urgent_workspace #2ECC71 #900000 #FFFFFF
+#	}
+#}
+
+
+
+bar {
+    font pango:mono 11
+    status_command i3blocks -c ~/.config/i3/i3blocks.conf
+    position top
+    modifier None
+}
+
+
+
+

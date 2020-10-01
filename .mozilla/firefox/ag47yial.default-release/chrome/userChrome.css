@@ -1,0 +1,126 @@
+
+
+
+
+#nav-bar{
+  z-index: 1;
+}
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/*Use with compact density*/
+
+
+
+/* Move Tab-bar beside Nav-bar */
+#TabsToolbar {
+  margin-bottom: 0px !important;                /* not needed anymore? */
+  margin-top: 0px !important;                   /*  */
+  margin-left: 43vw !important;                 /* was 35 */
+  margin-right: -0px !important;                /* was 34 */
+  height: 38px !important;
+}
+
+#nav-bar {
+  margin-bottom: -1px !important;               /* remove navbar bottom 1px border */
+  margin-top: -38px !important;
+  margin-right: 57vw !important;                /* was 65 */
+  border-top: none !important;
+  height: 38px !important;
+}
+
+/* Remove padding above tabbar in compact mode */
+#main-window[sizemode="normal"] > #titlebar {
+  -moz-appearance: initial !important;
+}
+
+
+/* Back & Forward buttons */
+#back-button > .toolbarbutton-icon,
+#forward-button > .toolbarbutton-icon {
+  transform: scale(0.9, 0.9) !important;
+  margin-left: -2px !important;
+  margin-right: -2px !important;
+}
+
+/* Move hamburger menu to the left */
+#PanelUI-button,
+#customization-panel-container,
+#customization-panelWrapper .panel-arrow {
+  -moz-box-ordinal-group: 0 !important;
+  margin-right: -6px !important;
+}
+
+#appMenu-popup {
+  margin-right: -258px !important;
+}
+
+#appMenu-popup .panel-arrow {
+  margin-right: 248px !important;
+}
+
+
+
+/* Tabs */
+.tabbrowser-tab {
+  height: 39px !important;
+}
+
+
+
+/* Hide various elements */
+/* Menu */
+
+
+/* HIDE ARROW IN URLBAR*/
+.urlbar-go-button {
+  display: none !important;
+}
+.urlbar-history-dropmarker {
+  display: none !important;
+}
+#pageActionSeparator {
+  display: none !important;
+}
+#star-button-box {
+  display: none !important;
+}
+/*Hide shadow under close button when hovering over it*/
+.tab-close-button:hover {
+  fill-opacity: 0 !important;
+}
+
+/* Blank the placeholder text in the address bar */
+.urlbar-input-box > .urlbar-input::placeholder {
+  opacity: 0 !important;
+}
+/* Blank the placeholder text in the search bar */
+#searchbar .textbox-input::placeholder {
+  opacity: 0 !important;
+}
+
+
+
+.tabbrowser-tab::after, .tabbrowser-tab::before    { border-left: none !important; }                                                    /* disapear spacer between tabs */
+.tabbrowser-tab[busy="true"] .tab-background-inner { background-color: #b71c1c !important; }                                            /* loading tab background */
+.tab-background[selected="true"]                   { background-color: #00796b !important; background-image: none !important; }         /* active tab background */
+.tab-background:not([selected])                    { background-color: #2a2a2e !important; }                                       /* inactive tab background */
+.tab-line                                          { height: 0px !important } 
+
+
+#PersonalToolbar{
+  margin-top: -70px !important;
+  transition: margin 0.1s linear !important;
+  position: fixed !important;
+  width: 100%;
+    display: block;
+
+  
+}
+#navigator-toolbox:hover #PersonalToolbar{
+  margin-top: 0px !important;
+   z-index: 1;
+ 
+ 	opacity: 0.8;
+}
+
